@@ -16,17 +16,21 @@ export const COLORS = {
 } as const;
 
 // ─── Plate Assets (SVG circles from Figma) ───────────────────────────────────
+// Use import.meta.env.BASE_URL so paths work both locally (/) and on GitHub
+// Pages (/sushiro-bill/) without hardcoding the repo name.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export const PLATE_ICONS: Record<PlateColor, string> = {
-  White:  '/assets/plate-white.svg',
-  Red:    '/assets/plate-red.svg',
-  Silver: '/assets/plate-silver.svg',
-  Gold:   '/assets/plate-gold.svg',
-  Black:  '/assets/plate-black.svg',
+  White:  `${base}/assets/plate-white.svg`,
+  Red:    `${base}/assets/plate-red.svg`,
+  Silver: `${base}/assets/plate-silver.svg`,
+  Gold:   `${base}/assets/plate-gold.svg`,
+  Black:  `${base}/assets/plate-black.svg`,
 };
 
 // ─── Logo / Background assets ─────────────────────────────────────────────────
-export const LOGO_SVG = '/assets/logo.svg';
-export const CONVEYOR_BG = '/assets/conveyor-bg.png';
+export const LOGO_SVG = `${base}/assets/logo.svg`;
+export const CONVEYOR_BG = `${base}/assets/conveyor-bg.png`;
 
 // ─── Plate Prices ─────────────────────────────────────────────────────────────
 export const PLATE_PRICES: Record<PlateColor, number> = {
