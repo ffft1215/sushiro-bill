@@ -16,7 +16,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   return (
     <div className="flex gap-6 items-center font-ibm-thai">
       {/* Score panel */}
-      <div className="bg-white border border-light-grey flex flex-col gap-6 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
+      <div className="bg-white border border-light-grey flex flex-col gap-2 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
         <span className="text-light-black text-[16px] whitespace-nowrap">
           {scoreLabel}
         </span>
@@ -26,7 +26,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       </div>
 
       {/* High Score panel */}
-      <div className="bg-white border border-light-grey flex flex-col gap-6 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
+      <div className="bg-white border border-light-grey flex flex-col gap-2 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
         <span className="text-light-black text-[16px] whitespace-nowrap">
           {highScoreLabel}
         </span>

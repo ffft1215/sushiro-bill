@@ -17,11 +17,11 @@ interface GameEndScreenProps {
 
 const COPY = {
   en: {
-    title: 'Total Damage:',
+    title: 'total damage:',
     score: 'Score',
     highScore: 'High Score',
-    restart: 'RESTART',
-    leave: 'LEAVE',
+    restart: 'restart',
+    leave: 'leave',
   },
   th: {
     title: 'ค่าเสียหายทั้งหมด',
@@ -55,7 +55,7 @@ const GameEndScreen: React.FC<GameEndScreenProps> = ({
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="font-ibm-thai font-semibold text-[48px] text-white leading-normal whitespace-nowrap"
+          className="font-ibm-thai font-semibold text-[36px] text-white leading-normal whitespace-nowrap"
         >
           {copy.title}
         </motion.p>
@@ -68,11 +68,11 @@ const GameEndScreen: React.FC<GameEndScreenProps> = ({
         className="absolute flex gap-6 items-center font-ibm-thai"
         style={{ left: 343, top: 192 }}
       >
-        <div className="bg-white border border-light-grey flex flex-col gap-6 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
+        <div className="bg-white border border-light-grey flex flex-col gap-2 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
           <span className="text-light-black text-[16px] whitespace-nowrap">{copy.score}</span>
           <span className="text-[40px] text-black text-center leading-none">{score}</span>
         </div>
-        <div className="bg-white border border-light-grey flex flex-col gap-6 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
+        <div className="bg-white border border-light-grey flex flex-col gap-2 items-center justify-center overflow-hidden px-10 py-6 rounded-lg w-[291px]">
           <span className="text-light-black text-[16px] whitespace-nowrap">{copy.highScore}</span>
           <span className="text-[40px] text-black text-center leading-none">{highScore}</span>
         </div>
@@ -89,7 +89,7 @@ const GameEndScreen: React.FC<GameEndScreenProps> = ({
           <p className="font-ibm-thai text-[24px] text-dark-black">No plates this game!</p>
         ) : (
           <>
-            <div className="flex flex-wrap gap-12 items-center justify-center">
+            <div className="flex flex-wrap gap-6 items-center justify-center">
               {platesPlayed.slice(0, 3).map(color => (
                 <div key={color} className="flex items-center justify-between w-[181px]">
                   <Legend color={color} />
@@ -100,7 +100,7 @@ const GameEndScreen: React.FC<GameEndScreenProps> = ({
               ))}
             </div>
             {platesPlayed.length > 3 && (
-              <div className="flex flex-wrap gap-12 items-center justify-center">
+              <div className="flex flex-wrap gap-6 items-center justify-center">
                 {platesPlayed.slice(3).map(color => (
                   <div key={color} className="flex items-center justify-between w-[178px]">
                     <Legend color={color} />

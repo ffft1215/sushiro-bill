@@ -14,15 +14,15 @@ interface IntroPageProps {
 const COPY = {
   en: {
     title: 'wait... how much was that',
-    subtitle: 'Sushiro bill. No calculator.',
-    play: 'PLAY',
-    langLabel: 'Eng',
+    subtitle: 'sushiro bill. no calculator.',
+    play: 'start',
+    langLabel: 'eng',
     appName: 'Sushiro',
   },
   th: {
     title: 'กินไปเท่าไหร่วะ',
     subtitle: 'เกมคิดเงินซูชิโร่ในหัว ลองดูจะรอดมั้ย',
-    play: 'เล่นเลย',
+    play: 'เริ่ม',
     langLabel: 'ไทย',
     appName: 'Sushiro',
   },
@@ -80,7 +80,7 @@ const IntroPage: React.FC<IntroPageProps> = ({ lang, onLangToggle, onPlay }) => 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="font-ibm-thai font-semibold text-[64px] leading-tight text-center"
+          className="font-ibm-thai font-semibold text-[36px] leading-tight text-center"
         >
           {copy.title}
         </motion.p>
@@ -89,7 +89,7 @@ const IntroPage: React.FC<IntroPageProps> = ({ lang, onLangToggle, onPlay }) => 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="font-ibm-thai font-light text-[36px] leading-normal text-center"
+          className="font-ibm-thai font-light text-[24px] leading-normal text-center"
         >
           {copy.subtitle}
         </motion.p>

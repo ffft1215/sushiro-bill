@@ -27,7 +27,7 @@ interface GameScreenProps {
 }
 
 const SCORE_LABELS = {
-  en: { score: 'Score', highScore: 'High Score', leave: 'LEAVE', restart: 'RESTART' },
+  en: { score: 'Score', highScore: 'High Score', leave: 'leave', restart: 'restart' },
   th: { score: 'คะแนน', highScore: 'คะแนนสูงสุด', leave: 'ออก', restart: 'เริ่มใหม่' },
 };
 
