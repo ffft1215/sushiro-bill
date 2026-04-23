@@ -5,9 +5,10 @@ import {
 } from '../tokens';
 
 // ─── Difficulty tiers ─────────────────────────────────────────────────────────
-// Tier 1 (rounds 1–5):  2–5 plates, only cheap plates (White, Red)
-// Tier 2 (rounds 6–10): 5–7 plates, mix of cheap + mid plates (White, Red, Silver)
-// Tier 3 (round 11+):   6–12 plates, all plate colors
+// Tier 1 (rounds 1–4):  2–4 plates, only White + Red
+// Tier 2 (rounds 5–8):  3–5 plates, White + Red + Silver, rare Gold
+// Tier 3 (rounds 9–12): 4–6 plates, White + Red + Silver + Gold, rare Black
+// Tier 4 (round 13+):   5–8 plates, all colors (hard cap at 8)
 type DifficultyTier = {
   minPlates: number;
   maxPlates: number;
@@ -15,15 +16,17 @@ type DifficultyTier = {
 };
 
 const DIFFICULTY_TIERS: DifficultyTier[] = [
-  { minPlates: 2, maxPlates: 5,  allowedColors: ['White', 'Red'] },
-  { minPlates: 5, maxPlates: 7,  allowedColors: ['White', 'Red', 'Silver'] },
-  { minPlates: 6, maxPlates: 12, allowedColors: ['White', 'Red', 'Silver', 'Gold', 'Black'] },
+  { minPlates: 2, maxPlates: 4, allowedColors: ['White', 'Red'] },
+  { minPlates: 3, maxPlates: 5, allowedColors: ['White', 'Red', 'Silver', 'Gold'] },
+  { minPlates: 4, maxPlates: 6, allowedColors: ['White', 'Red', 'Silver', 'Gold', 'Black'] },
+  { minPlates: 5, maxPlates: 8, allowedColors: ['White', 'Red', 'Silver', 'Gold', 'Black'] },
 ];
 
 function getTier(roundNumber: number): DifficultyTier {
-  if (roundNumber <= 5)  return DIFFICULTY_TIERS[0];
-  if (roundNumber <= 10) return DIFFICULTY_TIERS[1];
-  return DIFFICULTY_TIERS[2];
+  if (roundNumber <= 4)  return DIFFICULTY_TIERS[0];
+  if (roundNumber <= 8)  return DIFFICULTY_TIERS[1];
+  if (roundNumber <= 12) return DIFFICULTY_TIERS[2];
+  return DIFFICULTY_TIERS[3];
 }
 
 /**
