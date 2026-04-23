@@ -1,23 +1,46 @@
 import type { PlateColor, PlateItem, PlateCounts } from '../types';
 import {
-  PLATE_COLORS,
   PLATE_PRICES,
-  MIN_PLATES_PER_ROUND,
-  MAX_PLATES_PER_ROUND,
   EMPTY_PLATE_COUNTS,
 } from '../tokens';
 
+// ─── Difficulty tiers ─────────────────────────────────────────────────────────
+// Tier 1 (rounds 1–5):  2–5 plates, only cheap plates (White, Red)
+// Tier 2 (rounds 6–10): 5–7 plates, mix of cheap + mid plates (White, Red, Silver)
+// Tier 3 (round 11+):   6–12 plates, all plate colors
+type DifficultyTier = {
+  minPlates: number;
+  maxPlates: number;
+  allowedColors: PlateColor[];
+};
+
+const DIFFICULTY_TIERS: DifficultyTier[] = [
+  { minPlates: 2, maxPlates: 5,  allowedColors: ['White', 'Red'] },
+  { minPlates: 5, maxPlates: 7,  allowedColors: ['White', 'Red', 'Silver'] },
+  { minPlates: 6, maxPlates: 12, allowedColors: ['White', 'Red', 'Silver', 'Gold', 'Black'] },
+];
+
+function getTier(roundNumber: number): DifficultyTier {
+  if (roundNumber <= 5)  return DIFFICULTY_TIERS[0];
+  if (roundNumber <= 10) return DIFFICULTY_TIERS[1];
+  return DIFFICULTY_TIERS[2];
+}
+
 /**
- * Generate a random round of plates (3–12 plates, random colors).
+ * Generate a random round of plates with progressive difficulty.
+ * @param roundNumber 1-based round index within the current game session.
  */
-export function generateRound(): PlateItem[] {
+export function generateRound(roundNumber = 1): PlateItem[] {
+  const tier = getTier(roundNumber);
   const count =
-    Math.floor(Math.random() * (MAX_PLATES_PER_ROUND - MIN_PLATES_PER_ROUND + 1)) +
-    MIN_PLATES_PER_ROUND;
+    Math.floor(Math.random() * (tier.maxPlates - tier.minPlates + 1)) +
+    tier.minPlates;
 
   return Array.from({ length: count }, (_, i) => ({
     id: `plate-${Date.now()}-${i}`,
-    color: PLATE_COLORS[Math.floor(Math.random() * PLATE_COLORS.length)] as PlateColor,
+    color: tier.allowedColors[
+      Math.floor(Math.random() * tier.allowedColors.length)
+    ] as PlateColor,
   }));
 }
 

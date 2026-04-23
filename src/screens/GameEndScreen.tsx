@@ -47,15 +47,19 @@ const GameEndScreen: React.FC<GameEndScreenProps> = ({
     <div className="absolute inset-0 bg-bg-game overflow-hidden">
       <Footer className="absolute right-[37px] top-[24px]" />
 
-      <motion.p
-        initial={{ opacity: 0, y: -16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="absolute font-ibm-thai font-semibold text-[48px] text-white leading-normal whitespace-nowrap"
+      <div
+        className="absolute"
         style={{ left: '50%', transform: 'translateX(-50%)', top: 107 }}
       >
-        {copy.title}
-      </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="font-ibm-thai font-semibold text-[48px] text-white leading-normal whitespace-nowrap"
+        >
+          {copy.title}
+        </motion.p>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 16 }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import type { Language } from '../types';
-import { PLATE_COLORS, PLATE_BG, CONVEYOR_BG, LOGO_SVG } from '../tokens';
+import { PLATE_BG, CONVEYOR_BG } from '../tokens';
 import Button from '../components/Button';
 import Footer from '../components/Footer';
 
@@ -21,7 +21,7 @@ const COPY = {
   },
   th: {
     title: 'กินไปเท่าไหร่วะ',
-    subtitle: 'เกมคิดเงินซูชิในหัว ลองดูจะรอดมั้ย',
+    subtitle: 'เกมคิดเงินซูชิโร่ในหัว ลองดูจะรอดมั้ย',
     play: 'เล่นเลย',
     langLabel: 'ไทย',
     appName: 'Sushiro',
@@ -38,24 +38,32 @@ const IntroPage: React.FC<IntroPageProps> = ({ lang, onLangToggle, onPlay }) => 
 
   return (
     <div className="absolute inset-0 bg-bg-game overflow-hidden">
-
-      {/* ── Top bar: Logo + app name (left) | lang toggle (below logo) | footer (right) ── */}
-      <div className="absolute left-[37px] top-[24px] flex gap-4 items-center">
-        <div className="w-[91px] h-[41px]">
-          <img src={LOGO_SVG} alt="Sushiro logo" className="w-full h-full object-contain" />
-        </div>
-        <span className="font-ibm-thai text-[20px] text-white leading-normal">{copy.appName}</span>
-      </div>
-
-      {/* Lang toggle */}
+      {/* Lang toggle — pill switch, aligned with footer */}
       <button
         onClick={onLangToggle}
-        className="absolute left-[37px] top-[79px] flex gap-4 items-center group"
+        className="absolute left-[37px] top-[24px] flex gap-3 items-center hover:opacity-80 transition-opacity"
+        aria-label={`Switch language, currently ${copy.langLabel}`}
       >
-        <div className="w-[91px] h-[41px] opacity-60 group-hover:opacity-100 transition-opacity">
-          <img src={LOGO_SVG} alt="" className="w-full h-full object-contain" />
+        {/* Toggle track */}
+        <div
+          className="relative rounded-full flex-shrink-0"
+          style={{ width: 52, height: 28, backgroundColor: '#314158', border: '2px solid #1D293D' }}
+        >
+          {/* Sliding knob */}
+          <motion.div
+            animate={{ x: lang === 'th' ? 24 : 2 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            style={{
+              position: 'absolute',
+              top: 2,
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              backgroundColor: '#F8FAFC',
+            }}
+          />
         </div>
-        <span className="font-ibm-thai text-[20px] text-white leading-normal underline">
+        <span className="font-ibm-thai text-[20px] text-white leading-normal">
           {copy.langLabel}
         </span>
       </button>
@@ -63,29 +71,37 @@ const IntroPage: React.FC<IntroPageProps> = ({ lang, onLangToggle, onPlay }) => 
       <Footer className="absolute right-[37px] top-[24px]" />
 
       {/* ── Title block ── */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="absolute left-1/2 -translate-x-1/2 top-[120px] flex flex-col gap-9 items-center text-center text-white"
+      <div
+        className="absolute top-[120px] flex flex-col gap-3 items-center text-center text-white"
+        style={{ left: '50%', transform: 'translateX(-50%)', width: 'max-content', maxWidth: 900 }}
       >
-        <p className="font-ibm-thai font-semibold text-[64px] whitespace-nowrap leading-tight">
+        <motion.p
+          key={`title-${lang}`}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="font-ibm-thai font-semibold text-[64px] leading-tight text-center"
+        >
           {copy.title}
-        </p>
-        <p className="font-ibm-thai font-light text-[36px] leading-normal">
+        </motion.p>
+        <motion.p
+          key={`subtitle-${lang}`}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="font-ibm-thai font-light text-[36px] leading-normal text-center"
+        >
           {copy.subtitle}
-        </p>
-      </motion.div>
+        </motion.p>
+      </div>
 
       {/* ── Play button ── */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.3, duration: 0.4 }}
-        className="absolute left-1/2 -translate-x-1/2 top-[278px]"
+      <div
+        className="absolute top-[278px]"
+        style={{ left: '50%', transform: 'translateX(-50%)' }}
       >
         <Button label={copy.play} onClick={onPlay} />
-      </motion.div>
+      </div>
 
       {/* ── Decorative plate stack (right side, centred horizontally after midpoint) ── */}
       <div
@@ -123,13 +139,6 @@ const IntroPage: React.FC<IntroPageProps> = ({ lang, onLangToggle, onPlay }) => 
         <img src={CONVEYOR_BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
       </div>
 
-      {/* ── Plate color legend row (used as decorative strip) ── */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 opacity-30">
-        {PLATE_COLORS.map(color => {
-          const { top } = PLATE_BG[color];
-          return <div key={color} className="w-4 h-4 rounded-full" style={{ backgroundColor: top }} />;
-        })}
-      </div>
     </div>
   );
 };

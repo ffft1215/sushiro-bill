@@ -18,7 +18,7 @@ const PlateStack: React.FC<PlateStackProps> = ({ plates, isLastSettling }) => {
     <div
       className="absolute left-[131px]"
       style={{
-        bottom: '152px', // above conveyor belt (779px from top of 832px = 53px from bottom, +99px stack area)
+        bottom: '53px', // conveyor belt is 53px from bottom — plates stack up from the table surface
         display: 'flex',
         flexDirection: 'column-reverse',
         gap: `${PLATE_GAP}px`,

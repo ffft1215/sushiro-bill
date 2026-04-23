@@ -55,7 +55,9 @@ const GameScreen: React.FC<GameScreenProps> = ({
   const scoreRef = useRef(0);
   const highScoreRef = useRef(initialHighScore);
   const totalPlateCountsRef = useRef<PlateCounts>(resetPlateCounts());
-  const hasStarted = useRef(false);
+  const roundNumberRef = useRef(1);
+  const gameStartedRef = useRef(false);
+  const timerStartedRef = useRef(false); // timer starts only after first round finishes stacking
 
   scoreRef.current = score;
   highScoreRef.current = highScore;
@@ -74,7 +76,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
   const startRound = useCallback(() => {
     stackingTimersRef.current.forEach(clearTimeout);
     stackingTimersRef.current = [];
-    const plates = generateRound();
+    const plates = generateRound(roundNumberRef.current);
     currentPlatesRef.current = plates;
     correctTotalRef.current = calculateTotal(plates);
     setVisiblePlates([]);
@@ -90,21 +92,26 @@ const GameScreen: React.FC<GameScreenProps> = ({
           const t2 = setTimeout(() => {
             setIsLastSettling(false);
             setPhase('awaiting-answer');
+            // Start the countdown the very first time plates finish stacking
+            if (!timerStartedRef.current) {
+              timerStartedRef.current = true;
+              startTimer();
+            }
           }, 650);
           stackingTimersRef.current.push(t2);
         }
       }, PLATE_STACKING_DELAY_MS * (index + 1));
       stackingTimersRef.current.push(t);
     });
-  }, []);
+  }, [startTimer]);
 
   useEffect(() => {
-    if (!hasStarted.current) {
-      hasStarted.current = true;
-      startTimer();
-      startRound();
-    }
-    return () => { stackingTimersRef.current.forEach(clearTimeout); };
+    // gameStartedRef prevents React 18 StrictMode double-invoke from calling
+    // startRound() twice. Timer is intentionally NOT started here — it starts
+    // automatically after the first round of plates finishes stacking.
+    if (gameStartedRef.current) return;
+    gameStartedRef.current = true;
+    startRound();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -117,6 +124,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
         onHighScoreUpdate(newScore);
       }
       setTotalPlateCounts(prev => accumulatePlateCounts(prev, currentPlatesRef.current));
+      roundNumberRef.current += 1;
       startRound();
     } else {
       setIsShaking(true);
@@ -130,33 +138,39 @@ const GameScreen: React.FC<GameScreenProps> = ({
     stackingTimersRef.current.forEach(clearTimeout);
     stackingTimersRef.current = [];
     setScore(0);
+    scoreRef.current = 0;
+    setHighScore(initialHighScore);
+    highScoreRef.current = initialHighScore;
     setTotalPlateCounts(resetPlateCounts());
     setInputValue('');
+    roundNumberRef.current = 1;
+    gameStartedRef.current = false;
+    timerStartedRef.current = false; // reset so timer waits for first stack again
     resetTimer();
     setTimeout(() => {
-      startTimer();
+      gameStartedRef.current = true;
       startRound();
     }, 50);
-  }, [resetTimer, startTimer, startRound]);
+  }, [resetTimer, startRound, initialHighScore]);
 
   return (
     <div className="absolute inset-0 bg-bg-game overflow-hidden">
 
       <Footer className="absolute right-[37px] top-[24px]" />
 
-      <div className="absolute left-[51px] top-[53px] flex gap-2 items-center">
+      <div className="absolute left-[51px] top-[64px] flex gap-2 items-center">
         {PLATE_COLORS.map(color => (
           <Legend key={color} color={color} />
         ))}
       </div>
 
-      <div className="absolute right-[53px] top-[53px]">
+      <div className="absolute right-[37px] top-[64px]">
         <Timer timeLeft={timeLeft} />
       </div>
 
       <PlateStack plates={visiblePlates} isLastSettling={isLastSettling} />
 
-      <div className="absolute left-[616px] top-[259px]">
+      <div className="absolute right-[37px] top-[259px]">
         <ScoreBoard
           score={score}
           highScore={highScore}
@@ -165,7 +179,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
         />
       </div>
 
-      <div className="absolute left-[616px] top-[411px]">
+      <div className="absolute right-[37px] top-[411px]">
         <InputBox
           phase={phase}
           value={inputValue}
@@ -176,7 +190,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
         />
       </div>
 
-      <div className="absolute right-[53px] bottom-[39px] flex gap-6 items-center">
+      <div className="absolute right-[37px] bottom-[48px] flex gap-6 items-center">
         <Button label={labels.restart} onClick={handleRestart} />
         <Button label={labels.leave} onClick={onLeave} />
       </div>

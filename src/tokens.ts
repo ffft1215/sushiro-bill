@@ -17,16 +17,16 @@ export const COLORS = {
 
 // ─── Plate Assets (SVG circles from Figma) ───────────────────────────────────
 export const PLATE_ICONS: Record<PlateColor, string> = {
-  White:  'http://localhost:3845/assets/534cd6db3c07752b51199f62ce2c52249c7bcfcd.svg',
-  Red:    'http://localhost:3845/assets/49b12471a355c97fb48516ad9739a87a20922abb.svg',
-  Silver: 'http://localhost:3845/assets/8a89e7c1724ffb32b47d28a0198e31146272de58.svg',
-  Gold:   'http://localhost:3845/assets/3350e876987028e30db74092969ff8c73569a77c.svg',
-  Black:  'http://localhost:3845/assets/c6e24160c53d64aabad9802ed05b74cf51a41633.svg',
+  White:  '/assets/plate-white.svg',
+  Red:    '/assets/plate-red.svg',
+  Silver: '/assets/plate-silver.svg',
+  Gold:   '/assets/plate-gold.svg',
+  Black:  '/assets/plate-black.svg',
 };
 
 // ─── Logo / Background assets ─────────────────────────────────────────────────
-export const LOGO_SVG = 'http://localhost:3845/assets/c2b0f20558bc502c0f02a3eaec4d43bfbaf6b90f.svg';
-export const CONVEYOR_BG = 'http://localhost:3845/assets/267a50f566ca6309adb16cfeb0bffab61c9475e5.png';
+export const LOGO_SVG = '/assets/logo.svg';
+export const CONVEYOR_BG = '/assets/conveyor-bg.png';
 
 // ─── Plate Prices ─────────────────────────────────────────────────────────────
 export const PLATE_PRICES: Record<PlateColor, number> = {

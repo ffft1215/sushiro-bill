@@ -49,6 +49,9 @@ const App: React.FC = () => {
   const [screen, setScreen] = useState<AppScreen>('intro');
   const [lang, setLang] = useState<Language>('en');
   const [highScore, setHighScore] = useState(getStoredHighScore);
+  // Incremented only when a new game session starts — gives GameScreen a stable
+  // key during play so re-renders from setHighScore don't unmount/remount it.
+  const [gameSessionId, setGameSessionId] = useState(0);
   const [endData, setEndData] = useState<EndData>({
     score: 0,
     highScore: 0,
@@ -62,6 +65,7 @@ const App: React.FC = () => {
   }, []);
 
   const handlePlay = useCallback(() => {
+    setGameSessionId(id => id + 1);
     setScreen('game');
   }, []);
 
@@ -85,6 +89,7 @@ const App: React.FC = () => {
   }, []);
 
   const handleRestartFromEnd = useCallback(() => {
+    setGameSessionId(id => id + 1);
     setScreen('game');
   }, []);
 
@@ -112,7 +117,7 @@ const App: React.FC = () => {
 
       {screen === 'game' && (
         <GameScreen
-          key={`game-${Date.now()}`}
+          key={`game-${gameSessionId}`}
           lang={lang}
           initialHighScore={highScore}
           onHighScoreUpdate={handleHighScoreUpdate}
