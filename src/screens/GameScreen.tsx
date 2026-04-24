@@ -71,7 +71,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
     onGameEnd(scoreRef.current, finalHS, totalPlateCountsRef.current);
   }, [onHighScoreUpdate, onGameEnd]);
 
-  const { timeLeft, startTimer, resetTimer } = useGameTimer(handleTimerExpire);
+  const { timeLeft, startTimer, pauseTimer, resetTimer } = useGameTimer(handleTimerExpire);
 
   const startRound = useCallback(() => {
     stackingTimersRef.current.forEach(clearTimeout);
@@ -84,6 +84,11 @@ const GameScreen: React.FC<GameScreenProps> = ({
     setIsLastSettling(false);
     setPhase('stacking');
 
+    // Pause timer during stacking for ALL rounds after the first (timer not yet started on round 1)
+    if (timerStartedRef.current) {
+      pauseTimer();
+    }
+
     plates.forEach((plate, index) => {
       const t = setTimeout(() => {
         setVisiblePlates(prev => [...prev, plate]);
@@ -92,18 +97,19 @@ const GameScreen: React.FC<GameScreenProps> = ({
           const t2 = setTimeout(() => {
             setIsLastSettling(false);
             setPhase('awaiting-answer');
-            // Start the countdown the very first time plates finish stacking
             if (!timerStartedRef.current) {
+              // Start the countdown the very first time plates finish stacking
               timerStartedRef.current = true;
-              startTimer();
             }
+            // Start (first round) or resume (subsequent rounds) the timer
+            startTimer();
           }, 650);
           stackingTimersRef.current.push(t2);
         }
       }, PLATE_STACKING_DELAY_MS * (index + 1));
       stackingTimersRef.current.push(t);
     });
-  }, [startTimer]);
+  }, [startTimer, pauseTimer]);
 
   useEffect(() => {
     // gameStartedRef prevents React 18 StrictMode double-invoke from calling
