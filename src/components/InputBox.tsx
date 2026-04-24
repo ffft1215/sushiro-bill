@@ -116,8 +116,6 @@ const InputBox: React.FC<InputBoxProps> = ({
           <input
             ref={inputRef}
             type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
             value={value}
             onChange={e => {
               // Allow only digits
